@@ -186,6 +186,91 @@
 
   /* ---- ASSET / DOWNLOAD ROWS ---- */
   .asset-list{display:flex;flex-direction:column;gap:10px;}
+
+  /* ---- DOWNLOAD-ALL BANNER ---- */
+  .dl-all{
+    display:flex;align-items:center;gap:18px;
+    background:var(--navy);border-radius:13px;padding:22px 26px;
+    margin-bottom:22px;position:relative;overflow:hidden;
+  }
+  .dl-all .dhex{
+    position:absolute;inset:0;opacity:0.5;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='69.28' viewBox='0 0 120 69.28'><g fill='none' stroke='%23ffffff' stroke-width='1' opacity='0.12'><path d='M40 0 L20 34.64 L-20 34.64 L-40 0 L-20 -34.64 L20 -34.64 Z'/><path d='M40 69.28 L20 103.92 L-20 103.92 L-40 69.28 L-20 34.64 L20 34.64 Z'/><path d='M100 34.64 L80 69.28 L40 69.28 L20 34.64 L40 0 L80 0 Z'/><path d='M160 0 L140 34.64 L100 34.64 L80 0 L100 -34.64 L140 -34.64 Z'/><path d='M160 69.28 L140 103.92 L100 103.92 L80 69.28 L100 34.64 L140 34.64 Z'/></g></svg>");
+  }
+  .dl-all .dico{
+    position:relative;flex:none;width:46px;height:46px;
+    background:var(--orange);display:flex;align-items:center;justify-content:center;
+    clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+  }
+  .dl-all .dico svg{width:23px;height:23px;color:#fff;}
+  .dl-all .dinfo{position:relative;flex:1;min-width:0;}
+  .dl-all .dt{font-family:'Mada',system-ui,sans-serif;font-weight:600;font-size:1.14rem;color:#fff;}
+  .dl-all .dd{font-size:.92rem;color:#9fbac8;}
+  .dl-all .abtn{position:relative;}
+
+  /* ---- SCREENSHOT GALLERY ---- */
+  .shots{
+    display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:8px;
+  }
+  @media(max-width:760px){.shots{grid-template-columns:1fr 1fr;}}
+  @media(max-width:480px){.shots{grid-template-columns:1fr;}}
+  .shot{
+    position:relative;border:1px solid var(--line);border-radius:11px;
+    overflow:hidden;cursor:pointer;background:#000;aspect-ratio:16/9;
+    transition:.2s;
+  }
+  .shot:hover{border-color:var(--orange);transform:translateY(-3px);
+    box-shadow:0 14px 28px -20px rgba(2,48,72,0.5);}
+  .shot img{width:100%;height:100%;object-fit:cover;display:block;
+    transition:transform .35s ease;}
+  .shot:hover img{transform:scale(1.05);}
+  .shot .scap{
+    position:absolute;left:0;right:0;bottom:0;
+    padding:18px 12px 9px;
+    background:linear-gradient(transparent,rgba(2,48,72,0.88));
+    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;
+    letter-spacing:.05em;text-transform:uppercase;color:#fff;
+  }
+  .shot .szoom{
+    position:absolute;top:9px;right:9px;width:26px;height:26px;border-radius:7px;
+    background:rgba(2,48,72,0.7);display:flex;align-items:center;justify-content:center;
+    opacity:0;transition:.2s;
+  }
+  .shot:hover .szoom{opacity:1;}
+  .shot .szoom svg{width:14px;height:14px;color:#fff;}
+
+  /* ---- LIGHTBOX ---- */
+  .lightbox{
+    position:fixed;inset:0;z-index:5000;display:none;
+    background:rgba(2,20,32,0.94);
+    align-items:center;justify-content:center;padding:40px;
+  }
+  .lightbox.open{display:flex;}
+  .lightbox img{
+    max-width:94vw;max-height:82vh;border-radius:10px;
+    box-shadow:0 30px 80px rgba(0,0,0,0.6);
+  }
+  .lb-close{
+    position:absolute;top:22px;right:26px;width:42px;height:42px;
+    border:0;border-radius:50%;background:var(--orange);color:#fff;cursor:pointer;
+    font-size:22px;line-height:1;display:flex;align-items:center;justify-content:center;
+  }
+  .lb-close:hover{background:var(--orange-dk);}
+  .lb-cap{
+    position:absolute;bottom:26px;left:50%;transform:translateX(-50%);
+    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+    letter-spacing:.08em;text-transform:uppercase;color:#9fbac8;
+  }
+  .lb-nav{
+    position:absolute;top:50%;transform:translateY(-50%);
+    width:48px;height:48px;border:0;border-radius:50%;
+    background:rgba(255,255,255,0.1);color:#fff;cursor:pointer;
+    font-size:24px;display:flex;align-items:center;justify-content:center;
+  }
+  .lb-nav:hover{background:var(--orange);}
+  .lb-prev{left:26px;} .lb-next{right:26px;}
+  @media(max-width:560px){.lb-nav{width:38px;height:38px;}.lb-prev{left:10px;}.lb-next{right:10px;}}
+
   .asset{
     display:flex;align-items:center;gap:16px;
     background:var(--card);border:1px solid var(--line);border-radius:11px;
@@ -427,16 +512,70 @@
 <section id="assets">
   <div class="wrap">
     <div class="sec-tag">◆ Press Assets</div>
-    <h2>Logos, art &amp; media</h2>
-    <p>Download brand and game assets for use in coverage. More high-resolution screenshots and key art will be added as the game nears release.</p>
-    <div class="asset-list" style="margin-top:20px;">
+    <h2>Screenshots, logos &amp; media</h2>
+    <p>Everything you need to cover Thieves Guild Master. Click any screenshot to view it full size.</p>
+
+    <div class="dl-all" style="margin-top:22px;">
+      <div class="dhex"></div>
+      <div class="dico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 11l5 5 5-5M4 19h16"/></svg></div>
+      <div class="dinfo">
+        <div class="dt">Download the full press kit</div>
+        <div class="dd">All six 4K screenshots plus every logo variant, in one ZIP.</div>
+      </div>
+      <a class="abtn abtn-orange" href="assets/press/press-assets.zip" download>Download ZIP</a>
+    </div>
+
+    <h3 style="margin-top:6px;">Screenshots</h3>
+    <div class="shots">
+      <div class="shot" data-full="assets/screenshots/guild-members-thieves.jpg" data-cap="Guild Members — manage thieves, loyalty &amp; gear">
+        <img src="assets/screenshots/guild-members-thieves-thumb.jpg" alt="Guild Members screen" loading="lazy">
+        <div class="szoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div>
+        <div class="scap">Guild Members</div>
+      </div>
+      <div class="shot" data-full="assets/screenshots/new-contracts.jpg" data-cap="Available Contracts — assign the right crew">
+        <img src="assets/screenshots/new-contracts-thumb.jpg" alt="Available Contracts screen" loading="lazy">
+        <div class="szoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div>
+        <div class="scap">Available Contracts</div>
+      </div>
+      <div class="shot" data-full="assets/screenshots/contract-result.jpg" data-cap="Contract Result — execution, secrecy &amp; rewards">
+        <img src="assets/screenshots/contract-result-thumb.jpg" alt="Contract Result screen" loading="lazy">
+        <div class="szoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div>
+        <div class="scap">Contract Result</div>
+      </div>
+      <div class="shot" data-full="assets/screenshots/thieves-guild-office.jpg" data-cap="The Guild Office — your headquarters hub">
+        <img src="assets/screenshots/thieves-guild-office-thumb.jpg" alt="Guild Office screen" loading="lazy">
+        <div class="szoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div>
+        <div class="scap">The Guild Office</div>
+      </div>
+      <div class="shot" data-full="assets/screenshots/guild-upgrade-perks.jpg" data-cap="Guild Perks — unlock perk trees through Advisors">
+        <img src="assets/screenshots/guild-upgrade-perks-thumb.jpg" alt="Guild Perks screen" loading="lazy">
+        <div class="szoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div>
+        <div class="scap">Guild Perks</div>
+      </div>
+      <div class="shot" data-full="assets/screenshots/character-selection.jpg" data-cap="Character Creation — choose your Guildmaster archetype">
+        <img src="assets/screenshots/character-selection-thumb.jpg" alt="Character Creation screen" loading="lazy">
+        <div class="szoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div>
+        <div class="scap">Character Creation</div>
+      </div>
+    </div>
+
+    <h3>Logos &amp; brand</h3>
+    <div class="asset-list">
       <div class="asset">
         <div class="aico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 L21 7 L21 17 L12 22 L3 17 L3 7 Z"/></svg></div>
         <div class="ainfo">
-          <div class="an">HexMap Games — Logo (PNG)</div>
-          <div class="ad">Full studio logo with wordmark, transparent background.</div>
+          <div class="an">HexMap Games — Logo, light (PNG)</div>
+          <div class="ad">Full studio logo with wordmark, for light backgrounds.</div>
         </div>
         <a class="abtn abtn-orange" href="assets/hexmap-logo.png" download>Download</a>
+      </div>
+      <div class="asset">
+        <div class="aico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 L21 7 L21 17 L12 22 L3 17 L3 7 Z"/></svg></div>
+        <div class="ainfo">
+          <div class="an">HexMap Games — Logo, dark (PNG)</div>
+          <div class="ad">Full studio logo with wordmark, for dark backgrounds.</div>
+        </div>
+        <a class="abtn abtn-orange" href="assets/hexmap-logo-white.png" download>Download</a>
       </div>
       <div class="asset">
         <div class="aico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 L21 7 L21 17 L12 22 L3 17 L3 7 Z"/><path d="M12 8l4.6 2.6v5L12 18l-4.6-2.6v-5z"/></svg></div>
@@ -468,6 +607,15 @@
     </div>
   </div>
 </section>
+
+<!-- ===== LIGHTBOX ===== -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" id="lbClose" aria-label="Close">&times;</button>
+  <button class="lb-nav lb-prev" id="lbPrev" aria-label="Previous">&#8249;</button>
+  <img id="lbImg" src="" alt="">
+  <button class="lb-nav lb-next" id="lbNext" aria-label="Next">&#8250;</button>
+  <div class="lb-cap" id="lbCap"></div>
+</div>
 
 <!-- ===== CONTACT ===== -->
 <section id="contact">
@@ -529,6 +677,37 @@
     </div>
   </div>
 </footer>
+
+<script>
+  // ---- screenshot lightbox ----
+  const shots=[...document.querySelectorAll('.shot')];
+  const lb=document.getElementById('lightbox');
+  const lbImg=document.getElementById('lbImg');
+  const lbCap=document.getElementById('lbCap');
+  let idx=0;
+
+  function show(i){
+    idx=(i+shots.length)%shots.length;
+    const s=shots[idx];
+    lbImg.src=s.dataset.full;
+    lbImg.alt=s.dataset.cap;
+    lbCap.textContent=s.dataset.cap.replace(/&amp;/g,'&');
+  }
+  function openLb(i){ show(i); lb.classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeLb(){ lb.classList.remove('open'); document.body.style.overflow=''; }
+
+  shots.forEach((s,i)=>s.addEventListener('click',()=>openLb(i)));
+  document.getElementById('lbClose').addEventListener('click',closeLb);
+  document.getElementById('lbPrev').addEventListener('click',e=>{e.stopPropagation();show(idx-1);});
+  document.getElementById('lbNext').addEventListener('click',e=>{e.stopPropagation();show(idx+1);});
+  lb.addEventListener('click',e=>{ if(e.target===lb) closeLb(); });
+  document.addEventListener('keydown',e=>{
+    if(!lb.classList.contains('open')) return;
+    if(e.key==='Escape') closeLb();
+    if(e.key==='ArrowLeft') show(idx-1);
+    if(e.key==='ArrowRight') show(idx+1);
+  });
+</script>
 
 </body>
 </html>
