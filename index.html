@@ -1,0 +1,605 @@
+<!-- HexMap Games — Studio Website · light hex-tactics theme -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HexMap Games — Turn-Based Strategy & Management</title>
+<meta name="description" content="HexMap Games is an indie studio crafting turn-based strategy and management games with deep worldbuilding. Currently making Thieves Guild Master.">
+<link rel="icon" type="image/png" href="assets/hexmap-mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ebrima:opsz,wght@9..144,500;9..144,600;9..144,700&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:      #023048;
+    --navy-2:    #0a3f5c;
+    --orange:    #ea6b34;
+    --orange-dk: #d4571f;
+    --paper:     #f6f3ec;
+    --paper-2:   #efe9dc;
+    --card:      #ffffff;
+    --ink:       #023048;
+    --ink-soft:  #4f6571;
+    --line:      #e0d9c8;
+    --line-soft: #ebe5d7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Outfit',system-ui,sans-serif;
+    font-size:18px;line-height:1.62;
+    overflow-x:hidden;-webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+  ::selection{background:var(--orange);color:#fff;}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 32px;}
+
+  .hexbg{
+    position:absolute;inset:0;pointer-events:none;z-index:0;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='56' height='98' viewBox='0 0 56 98'><g fill='none' stroke='%23023048' stroke-width='1.3' opacity='0.5'><path d='M28 1 L55 17 L55 49 L28 65 L1 49 L1 17 Z'/><path d='M28 65 L55 81 L55 113 L28 129 L1 113 L1 81 Z'/></g></svg>");
+    opacity:0.16;
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:1000;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:16px 32px;transition:.28s;
+  }
+  nav.solid{
+    background:rgba(246,243,236,0.93);
+    border-bottom:1px solid var(--line);
+    padding:10px 32px;backdrop-filter:blur(10px);
+  }
+  .brand{display:flex;align-items:center;gap:11px;}
+  .brand img{width:38px;height:auto;display:block;}
+  .brand-name{font-family:'Ebrima',serif;font-weight:700;font-size:20px;color:var(--navy);}
+  .brand-name b{color:var(--orange);font-weight:700;}
+  .nav-links{display:flex;gap:30px;align-items:center;}
+  .nav-links a{font-size:14px;font-weight:500;color:var(--ink-soft);transition:.2s;}
+  .nav-links a:hover{color:var(--orange);}
+  .nav-cta{
+    font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;
+    letter-spacing:.04em;text-transform:uppercase;
+    background:var(--navy);color:#fff!important;padding:9px 17px;border-radius:7px;
+  }
+  .nav-cta:hover{background:var(--orange);}
+  @media(max-width:820px){.nav-links a:not(.nav-cta){display:none;}}
+
+  /* ---------- HERO ---------- */
+  header{
+    position:relative;min-height:100vh;display:flex;align-items:center;
+    padding:120px 0 60px;
+    background:
+      radial-gradient(ellipse at 85% 25%,rgba(234,107,52,0.12),transparent 55%),
+      radial-gradient(ellipse at 8% 95%,rgba(2,48,72,0.07),transparent 55%),
+      var(--paper);
+    overflow:hidden;
+  }
+  .hero-grid{
+    position:relative;z-index:2;
+    display:grid;grid-template-columns:1.04fr .96fr;gap:56px;align-items:center;
+  }
+  @media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:48px;}}
+  .pill{
+    display:inline-flex;align-items:center;gap:9px;
+    font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:700;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--navy);
+    background:var(--card);border:1px solid var(--line);
+    padding:8px 14px;border-radius:100px;margin-bottom:26px;
+  }
+  .pill .blip{width:8px;height:8px;border-radius:50%;background:var(--orange);
+    box-shadow:0 0 0 4px rgba(234,107,52,0.18);}
+  h1{
+    font-family:'Ebrima',serif;font-weight:600;
+    font-size:clamp(2.6rem,6vw,4.6rem);line-height:1.04;
+    color:var(--navy);letter-spacing:-0.01em;
+  }
+  h1 em{font-style:normal;color:var(--orange);}
+  .hero-sub{
+    font-size:clamp(1.08rem,1.7vw,1.32rem);color:var(--ink-soft);
+    max-width:520px;margin-top:24px;
+  }
+  .motto{
+    margin-top:30px;display:flex;align-items:center;gap:14px;
+    font-family:'Ebrima',serif;font-style:italic;font-size:1.18rem;color:var(--navy);
+  }
+  .motto::before{content:"";width:34px;height:3px;background:var(--orange);border-radius:2px;}
+  .cta-row{display:flex;gap:14px;margin-top:36px;flex-wrap:wrap;}
+  .btn{
+    font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:700;
+    letter-spacing:.05em;text-transform:uppercase;
+    padding:15px 26px;border-radius:9px;cursor:pointer;transition:.2s;
+    display:inline-flex;align-items:center;gap:9px;
+  }
+  .btn-primary{background:var(--orange);color:#fff;border:1px solid var(--orange);}
+  .btn-primary:hover{background:var(--orange-dk);transform:translateY(-2px);
+    box-shadow:0 12px 26px rgba(234,107,52,0.30);}
+  .btn-navy{background:var(--navy);color:#fff;border:1px solid var(--navy);}
+  .btn-navy:hover{background:var(--navy-2);transform:translateY(-2px);}
+  .btn-ghost{background:transparent;color:var(--navy);border:1px solid var(--navy);}
+  .btn-ghost:hover{background:var(--navy);color:#fff;}
+
+  .board-card{
+    position:relative;background:var(--card);border:1px solid var(--line);
+    border-radius:18px;padding:26px;
+    box-shadow:0 30px 60px -28px rgba(2,48,72,0.35);
+  }
+  .board-card .bc-top{
+    display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;
+  }
+  .bc-label{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);}
+  .bc-turn{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+    color:var(--orange);background:rgba(234,107,52,0.10);
+    padding:4px 10px;border-radius:6px;letter-spacing:.06em;}
+  .board-svg{display:block;width:100%;height:auto;border-radius:10px;}
+  .hex-cell{transition:transform .2s ease,fill .2s ease;cursor:pointer;
+    transform-origin:center;transform-box:fill-box;}
+  .hex-cell:hover{fill:var(--orange);transform:translateY(-3px);}
+  .bc-legend{
+    display:flex;gap:18px;flex-wrap:wrap;margin-top:16px;
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;
+    letter-spacing:.05em;color:var(--ink-soft);
+  }
+  .bc-legend span{display:flex;align-items:center;gap:7px;}
+  .swatch{width:11px;height:11px;border-radius:3px;}
+
+  /* ---------- SECTION SCAFFOLD ---------- */
+  section{position:relative;padding:108px 0;}
+  .section-tag{
+    font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:700;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--orange);
+    display:flex;align-items:center;gap:10px;margin-bottom:16px;
+  }
+  .section-tag::before{
+    content:"";width:22px;height:22px;flex:none;background:var(--orange);
+    -webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 2 L21 7 L21 17 L12 22 L3 17 L3 7 Z'/></svg>") center/contain no-repeat;
+            mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 2 L21 7 L21 17 L12 22 L3 17 L3 7 Z'/></svg>") center/contain no-repeat;
+  }
+  h2{
+    font-family:'Ebrima',serif;font-weight:600;
+    font-size:clamp(1.9rem,3.8vw,2.9rem);line-height:1.16;
+    color:var(--navy);margin-bottom:18px;letter-spacing:-0.01em;
+  }
+  .lead{font-size:1.18rem;color:var(--ink-soft);max-width:660px;}
+
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease;}
+  .reveal.in{opacity:1;transform:none;}
+
+  /* ---------- STUDIO ---------- */
+  #studio{background:var(--card);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .studio-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:60px;align-items:start;margin-top:44px;}
+  @media(max-width:860px){.studio-grid{grid-template-columns:1fr;gap:42px;}}
+  .studio-grid p{margin-bottom:18px;}
+  .studio-grid p:last-child{margin-bottom:0;}
+  .pull{font-family:'Ebrima',serif;font-size:1.4rem;line-height:1.4;color:var(--navy);}
+  .pull .hl{color:var(--orange);font-style:italic;}
+  .creed{
+    background:var(--paper);border:1px solid var(--line);border-radius:16px;
+    padding:32px;position:relative;
+  }
+  .creed h3{
+    font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--orange);margin-bottom:20px;
+  }
+  .creed-item{display:flex;gap:13px;margin-bottom:17px;font-size:1.02rem;}
+  .creed-item:last-child{margin-bottom:0;}
+  .creed-item .hx{
+    width:18px;height:18px;flex:none;margin-top:4px;background:var(--navy);
+    -webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 2 L21 7 L21 17 L12 22 L3 17 L3 7 Z'/></svg>") center/contain no-repeat;
+            mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 2 L21 7 L21 17 L12 22 L3 17 L3 7 Z'/></svg>") center/contain no-repeat;
+  }
+
+  /* ---------- STATS STRIP ---------- */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:60px;}
+  @media(max-width:640px){.stats{grid-template-columns:repeat(2,1fr);}}
+  .stat{
+    background:var(--paper);border:1px solid var(--line);border-radius:14px;
+    padding:26px 20px;text-align:center;transition:.2s;
+  }
+  .stat:hover{border-color:var(--orange);transform:translateY(-3px);}
+  .stat .num{font-family:'Ebrima',serif;font-weight:700;font-size:2.4rem;
+    color:var(--orange);line-height:1;}
+  .stat .lbl{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;
+    letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin-top:10px;}
+
+  /* ---------- GAME ---------- */
+  #game{background:var(--paper);}
+  .game-head{display:flex;justify-content:space-between;align-items:flex-end;
+    flex-wrap:wrap;gap:18px;}
+  .badge{
+    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+    letter-spacing:.1em;text-transform:uppercase;
+    background:rgba(2,48,72,0.06);color:var(--navy);
+    border:1px solid var(--line);padding:8px 14px;border-radius:100px;
+    display:flex;align-items:center;gap:8px;white-space:nowrap;
+  }
+  .badge .blip{width:7px;height:7px;border-radius:50%;background:var(--orange);}
+  .game-card{
+    margin-top:44px;background:var(--card);border:1px solid var(--line);
+    border-radius:20px;overflow:hidden;
+    display:grid;grid-template-columns:1.02fr 1fr;
+    box-shadow:0 34px 64px -36px rgba(2,48,72,0.4);
+  }
+  @media(max-width:880px){.game-card{grid-template-columns:1fr;}}
+  .poster{
+    position:relative;min-height:430px;
+    background:
+      radial-gradient(circle at 70% 22%,rgba(234,107,52,0.22),transparent 55%),
+      linear-gradient(160deg,var(--navy),#011f30);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:40px;overflow:hidden;
+  }
+  .poster .phex{position:absolute;inset:0;opacity:0.5;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='52' height='90' viewBox='0 0 52 90'><g fill='none' stroke='%23ffffff' stroke-width='1.2' opacity='0.5'><path d='M26 1 L51 15 L51 45 L26 59 L1 45 L1 15 Z'/><path d='M26 59 L51 73 L51 103 L26 117 L1 103 L1 73 Z'/></g></svg>");
+    -webkit-mask-image:radial-gradient(ellipse at 50% 45%,#000,transparent 78%);
+            mask-image:radial-gradient(ellipse at 50% 45%,#000,transparent 78%);}
+  .crest{position:relative;z-index:2;text-align:center;}
+  .crest .ring{
+    width:122px;height:122px;margin:0 auto;border-radius:50%;
+    background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.14);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .crest .gtitle{
+    font-family:'Ebrima',serif;font-weight:700;font-size:1.7rem;color:#fff;
+    margin-top:22px;line-height:1.12;
+  }
+  .crest .gtitle .tm{font-size:.5em;vertical-align:super;color:var(--orange);}
+  .crest .gsub{
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--orange);margin-top:10px;
+  }
+  .game-body{padding:46px 42px;}
+  @media(max-width:520px){.game-body{padding:34px 26px;}}
+  .game-body h3{font-family:'Ebrima',serif;font-weight:600;font-size:1.7rem;
+    color:var(--navy);margin-bottom:6px;}
+  .game-body .genre{font-family:'JetBrains Mono',monospace;font-size:10.5px;
+    font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--ink-soft);margin-bottom:20px;}
+  .game-body > p{color:var(--ink-soft);margin-bottom:24px;}
+  .feat-list{display:flex;flex-direction:column;border-top:1px solid var(--line-soft);}
+  .feat{display:flex;gap:15px;padding:16px 0;border-bottom:1px solid var(--line-soft);
+    align-items:flex-start;}
+  .feat .ico{flex:none;width:38px;height:38px;border-radius:9px;
+    background:rgba(234,107,52,0.10);display:flex;align-items:center;justify-content:center;}
+  .feat .ico svg{width:21px;height:21px;color:var(--orange);}
+  .feat .ft{font-family:'Ebrima',serif;font-weight:600;font-size:1.05rem;color:var(--navy);}
+  .feat .fd{font-size:.96rem;color:var(--ink-soft);line-height:1.45;}
+  .game-body .btn{margin-top:28px;}
+
+  /* ---------- CRAFT ---------- */
+  #craft{background:var(--card);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px;}
+  @media(max-width:780px){.pillars{grid-template-columns:1fr;}}
+  .pillar{
+    background:var(--paper);border:1px solid var(--line);border-radius:16px;
+    padding:34px 28px;transition:.22s;
+  }
+  .pillar:hover{transform:translateY(-4px);border-color:var(--orange);
+    box-shadow:0 20px 38px -24px rgba(2,48,72,0.35);}
+  .hexnum{
+    width:46px;height:46px;background:var(--navy);
+    clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;color:#fff;
+    transition:.22s;
+  }
+  .pillar:hover .hexnum{background:var(--orange);}
+  .pillar h4{font-family:'Ebrima',serif;font-weight:600;font-size:1.28rem;
+    color:var(--navy);margin:18px 0 10px;}
+  .pillar p{font-size:1rem;color:var(--ink-soft);}
+
+  /* ---------- CONTACT ---------- */
+  #contact{
+    background:
+      radial-gradient(ellipse at 50% 130%,rgba(234,107,52,0.14),transparent 60%),
+      var(--paper);
+    text-align:center;
+  }
+  #contact .section-tag{justify-content:center;}
+  #contact h2{margin-bottom:16px;}
+  #contact .lead{margin:0 auto 34px;}
+  .contact-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+  .channels{margin-top:46px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+  .channels a{
+    display:flex;align-items:center;gap:9px;
+    font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:700;
+    letter-spacing:.05em;text-transform:uppercase;color:var(--navy);
+    background:var(--card);border:1px solid var(--line);
+    padding:11px 18px;border-radius:9px;transition:.2s;
+  }
+  .channels a:hover{border-color:var(--orange);color:var(--orange);transform:translateY(-2px);}
+  .channels svg{width:16px;height:16px;}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--navy);color:#cfe0e8;padding:46px 0 38px;}
+  .foot-top{display:flex;justify-content:space-between;align-items:center;
+    flex-wrap:wrap;gap:22px;padding-bottom:26px;border-bottom:1px solid rgba(255,255,255,0.1);}
+  .foot-brand{display:flex;align-items:center;gap:11px;}
+  .foot-brand img{width:40px;height:auto;}
+  .foot-brand .fb-name{font-family:'Ebrima',serif;font-weight:700;font-size:19px;color:#fff;}
+  .foot-brand .fb-name b{color:var(--orange);}
+  .foot-nav{display:flex;gap:24px;flex-wrap:wrap;
+    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+    letter-spacing:.06em;text-transform:uppercase;}
+  .foot-nav a{color:#9fbac8;transition:.2s;}
+  .foot-nav a:hover{color:var(--orange);}
+  .foot-bot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
+    padding-top:22px;font-family:'JetBrains Mono',monospace;font-size:10.5px;
+    letter-spacing:.05em;color:#7d9bab;text-transform:uppercase;}
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav id="nav">
+  <a class="brand" href="#top">
+    <img src="assets/hexmap-logo.png" alt="HexMap Games">
+<!--    <span class="brand-name">Hex<b>Map</b> Games</span>  -->
+  </a>
+  <div class="nav-links">
+    <a href="#studio">Studio</a>
+    <a href="#game">Our Games</a>
+    <a href="#craft">Craft</a>
+    <a class="nav-cta" href="#contact">Get In Touch</a>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<header id="top">
+  <div class="hexbg"></div>
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="pill reveal"><span class="blip"></span>Strategy Game Studio</div>
+        <h1 class="reveal">Turn-based worlds<br>worth <em>one more turn.</em></h1>
+        <p class="hero-sub reveal">HexMap Games is an indie studio crafting turn-based strategy and management games with deep worldbuilding and long-session depth.</p>
+        <div class="motto reveal">"Just one more turn" is our entire design philosophy.</div>
+        <div class="cta-row reveal">
+          <a class="btn btn-primary" href="#game">See Our Games</a>
+          <a class="btn btn-ghost" href="#studio">Meet the Studio</a>
+        </div>
+      </div>
+
+      <div class="board-card reveal">
+        <div class="bc-top">
+          <span class="bc-label"></span>
+          <span class="bc-turn">Turn 14</span>
+        </div>
+        <svg class="board-svg" viewBox="0 0 420 320" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <g id="hx"><path d="M0,-30 L26,-15 L26,15 L0,30 L-26,15 L-26,-15 Z"/></g>
+          </defs>
+          <g stroke="#ffffff" stroke-width="2.5">
+            <use href="#hx" x="62"  y="50"  class="hex-cell" fill="#cfe6e2"/>
+            <use href="#hx" x="114" y="50"  class="hex-cell" fill="#023048"/>
+            <use href="#hx" x="166" y="50"  class="hex-cell" fill="#cfe6e2"/>
+            <use href="#hx" x="218" y="50"  class="hex-cell" fill="#cfe6e2"/>
+            <use href="#hx" x="270" y="50"  class="hex-cell" fill="#ea6b34"/>
+            <use href="#hx" x="322" y="50"  class="hex-cell" fill="#cfe6e2"/>
+            <use href="#hx" x="88"  y="95"  class="hex-cell" fill="#cfe6e2"/>
+            <use href="#hx" x="140" y="95"  class="hex-cell" fill="#cfe6e2"/>
+            <use href="#hx" x="192" y="95"  class="hex-cell" fill="#023048"/>
+            <use href="#hx" x="244" y="95"  class="hex-cell" fill="#cfe6e2"/>
+            <use href="#hx" x="296" y="95"  class="hex-cell" fill="#cfe6e2"/>
+            <use href="#hx" x="62"  y="140" class="hex-cell" fill="#ea6b34"/>
+            <use href="#hx" x="114" y="140" class="hex-cell" fill="#cfe6e2"/>
+            <use href="#hx" x="166" y="140" class="hex-cell" fill="#cfe6e2"/>
+            <use href="#hx" x="218" y="140" class="hex-cell" fill="#cfe6e2"/>
+            <use href="#hx" x="270" y="140" class="hex-cell" fill="#cfe6e2"/>
+            <use href="#hx" x="322" y="140" class="hex-cell" fill="#023048"/>
+            <use href="#hx" x="88"  y="185" class="hex-cell" fill="#cfe6e2"/>
+            <use href="#hx" x="140" y="185" class="hex-cell" fill="#cfe6e2"/>
+            <use href="#hx" x="192" y="185" class="hex-cell" fill="#ea6b34"/>
+            <use href="#hx" x="244" y="185" class="hex-cell" fill="#cfe6e2"/>
+            <use href="#hx" x="296" y="185" class="hex-cell" fill="#cfe6e2"/>
+            <use href="#hx" x="62"  y="230" class="hex-cell" fill="#cfe6e2"/>
+            <use href="#hx" x="114" y="230" class="hex-cell" fill="#cfe6e2"/>
+            <use href="#hx" x="166" y="230" class="hex-cell" fill="#023048"/>
+            <use href="#hx" x="218" y="230" class="hex-cell" fill="#cfe6e2"/>
+            <use href="#hx" x="270" y="230" class="hex-cell" fill="#cfe6e2"/>
+            <use href="#hx" x="322" y="230" class="hex-cell" fill="#cfe6e2"/>
+          </g>
+          <g>
+            <circle cx="270" cy="50"  r="11" fill="#fff"/><circle cx="270" cy="50"  r="6" fill="#023048"/>
+            <circle cx="62"  cy="140" r="11" fill="#fff"/><circle cx="62"  cy="140" r="6" fill="#023048"/>
+            <circle cx="192" cy="185" r="11" fill="#fff"/><circle cx="192" cy="185" r="6" fill="#023048"/>
+          </g>
+        </svg>
+        <div class="bc-legend">
+          <span><i class="swatch" style="background:#023048;"></i>You</span>
+          <span><i class="swatch" style="background:#ea6b34;"></i>Opponent</span>
+          <span><i class="swatch" style="background:#cfe6e2;"></i>Open Tile</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== STUDIO ===== -->
+<section id="studio">
+  <div class="wrap">
+    <div class="section-tag reveal">The Team</div>
+    <h2 class="reveal">Industry veterans, making the games<br>we'd rather be playing.</h2>
+    <div class="studio-grid">
+      <div class="reveal">
+        <p class="pull">After more than two decades building big corporate live-service titles, we walked away to make games <span class="hl">we ourselves want to play</span> as lifelong strategy and tabletop fans.</p>
+        <p>We're a team of two-and-a-half, backed by a trusted handful of freelancers. Small by design, every decision passes through people who genuinely love this genre.</p>
+        <p>We're decades-deep players of TTRPGs, CRPGs, management and strategy games. The hex map is where the tabletop and the strategy screen meet, so that's what we named the studio.</p>
+        <p>Our goal is simple: make a game that makes you say "just one more turn" at midnight… and then keeps you playing four more hours until morning.</p>
+      </div>
+      <div class="creed reveal">
+        <h3>// What We Stand For</h3>
+        <div class="creed-item"><span class="hx"></span><span><strong>Depth over noise.</strong> Systems that reward attention and planning, not reflexes.</span></div>
+        <div class="creed-item"><span class="hx"></span><span><strong>Worldbuilding & Lore.</strong> A setting you believe in before a single number is balanced.</span></div>
+        <div class="creed-item"><span class="hx"></span><span><strong>The midnight test.</strong> If it doesn't earn "one more turn," it isn't finished.</span></div>
+        <div class="creed-item"><span class="hx"></span><span><strong>Small and honest.</strong> No dark patterns, no treadmills, just the game.</span></div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat reveal"><div class="num">2.5</div><div class="lbl">Core Team</div></div>
+      <div class="stat reveal"><div class="num">20+</div><div class="lbl">Avg. Years In Industry</div></div>
+      <div class="stat reveal"><div class="num">1</div><div class="lbl">Game In Development</div></div>
+      <div class="stat reveal"><div class="num">∞</div><div class="lbl">"One More Turn"</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== GAME ===== -->
+<section id="game">
+  <div class="wrap">
+    <div class="game-head">
+      <div class="reveal">
+        <div class="section-tag">Our Current Project</div>
+        <h2 style="margin-bottom:0;">Thieves Guild Master</h2>
+      </div>
+      <span class="badge reveal"><span class="blip"></span>In Development</span>
+    </div>
+
+    <div class="game-card reveal">
+      <div class="poster">
+        <div class="phex"></div>
+        <div class="crest">
+          <div class="ring">
+            <svg width="66" height="66" viewBox="0 0 66 66" fill="none">
+              <path d="M33 4 L56 17 L56 43 L33 56 L10 43 L10 17 Z" stroke="#ea6b34" stroke-width="3"/>
+              <path d="M33 16 L46 23.5 L46 38.5 L33 46 L20 38.5 L20 23.5 Z" fill="#ea6b34" opacity="0.22"/>
+              <path d="M33 16 L46 23.5 L46 38.5 L33 46 L20 38.5 L20 23.5 Z" stroke="#fff" stroke-width="2"/>
+              <circle cx="33" cy="31" r="3.4" fill="#fff"/>
+            </svg>
+          </div>
+          <div class="gtitle">Thieves Guild Master<span class="tm">™</span></div>
+          <div class="gsub">Strategy · Management · PC</div>
+        </div>
+      </div>
+      <div class="game-body">
+        <h3>Run the guild. Take the city.</h3>
+        <div class="genre">Turn-Based Strategy / Management · Single-Player</div>
+        <p>Our love in pixelart. A medieval fantasy thieves guild management game set in a feudal city of nobles, rival gangs and shifting politics. Take contracts, build a crew, grow your guild, and paint the city map with your influence, one careful turn at a time.</p>
+        <div class="feat-list">
+          <div class="feat">
+            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h12l4 4v12H4z"/><path d="M8 11h8M8 15h6"/></svg></span>
+            <div><div class="ft">Contract Strategy</div><div class="fd">Weigh risk against reward and assign the right crew to every job.</div></div>
+          </div>
+          <div class="feat">
+            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3"/><circle cx="16" cy="11" r="2.4"/><path d="M3 20c0-3.3 2.7-5 6-5s6 1.7 6 5M14 20c0-2 1-3.5 3-3.5s4 1 4 3.5"/></svg></span>
+            <div><div class="ft">Crew Building</div><div class="fd">Recruit thieves with their own skills, traits, loyalty and morale.</div></div>
+          </div>
+          <div class="feat">
+            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18M3 8l9-5 9 5M5 8v9a7 4 0 0 0 14 0V8"/></svg></span>
+            <div><div class="ft">Guild Progression</div><div class="fd">Upgrade rooms, unlock perks and climb reputation across factions.</div></div>
+          </div>
+          <div class="feat">
+            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 L21 7 L21 17 L12 22 L3 17 L3 7 Z"/><path d="M12 8l4.6 2.6v5L12 18l-4.6-2.6v-5z"/></svg></span>
+            <div><div class="ft">City Influence Map</div><div class="fd">Conquer turfs district by district until the whole map turns yours.</div></div>
+          </div>
+        </div>
+        <a class="btn btn-navy" href="#contact">Follow Development</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CRAFT ===== -->
+<section id="craft">
+  <div class="wrap">
+    <div class="section-tag reveal">How We Build</div>
+    <h2 class="reveal">Three things every HexMap game has to earn.</h2>
+    <p class="lead reveal">We come from strategy, management and the tabletop. These are the standards we hold our own work to.</p>
+    <div class="pillars">
+      <div class="pillar reveal">
+        <div class="hexnum">01</div>
+        <h4>A World With Weight</h4>
+        <p>Believable settings with history, factions and consequence, a place, not a backdrop. Worldbuilding leads; mechanics follow.</p>
+      </div>
+      <div class="pillar reveal">
+        <div class="hexnum">02</div>
+        <h4>Systems That Talk</h4>
+        <p>Interlocking strategy and management layers where every turn ripples outward. Depth that rewards a curious, patient player.</p>
+      </div>
+      <div class="pillar reveal">
+        <div class="hexnum">03</div>
+        <h4>Session Length You Feel</h4>
+        <p>The pacing of a great campaign night. Take one turn, look up, and find the night is gone.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section id="contact">
+  <div class="wrap">
+    <div class="section-tag reveal">Get In Touch</div>
+    <h2 class="reveal">Press, players and fellow strategists welcome.</h2>
+    <p class="lead reveal">Following along, covering the game, or just want to talk turn-based design? Our door is open.</p>
+    <div class="contact-row reveal">
+      <a class="btn btn-primary" href="mailto:hello@hexmapgames.com">hello@hexmapgames.com</a>
+      <a class="btn btn-navy" href="mailto:press@hexmapgames.com">Press Inquiries</a>
+    </div>
+    <div class="channels reveal">
+      <a href="#top">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 8l9 6 9-6"/></svg>
+        Newsletter
+      </a>
+      <a href="#top">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 4a8.5 8.5 0 0 1-2.4.7A4.2 4.2 0 0 0 20.5 2a8.4 8.4 0 0 1-2.7 1A4.2 4.2 0 0 0 11 6.8 11.9 11.9 0 0 1 2.4 2.5a4.2 4.2 0 0 0 1.3 5.6A4.1 4.1 0 0 1 1.8 7.6v.1a4.2 4.2 0 0 0 3.4 4.1 4.3 4.3 0 0 1-1.9.1 4.2 4.2 0 0 0 3.9 2.9A8.5 8.5 0 0 1 1 16.5 12 12 0 0 0 7.5 18c7.8 0 12-6.5 12-12.1v-.6A8.5 8.5 0 0 0 21 4z"/></svg>
+        Social
+      </a>
+      <a href="#game">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h14v16l-7-4-7 4z"/></svg>
+        Wishlist
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <img src="assets/hexmap-logo.png" alt="HexMap Games">
+        <span class="fb-name">Hex<b>Map</b> Games</span>
+      </div>
+      <div class="foot-nav">
+        <a href="#studio">Studio</a>
+        <a href="#game">Our Games</a>
+        <a href="#craft">Craft</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 HexMap Games · Just one more turn.</span>
+      <span>Thieves Guild Master™ is a trademark of HexMap Games.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const nav=document.getElementById('nav');
+  addEventListener('scroll',()=>nav.classList.toggle('solid',scrollY>40));
+
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach((e)=>{
+      if(e.isIntersecting){
+        const sibs=[...e.target.parentElement.querySelectorAll('.reveal')];
+        e.target.style.transitionDelay=(Math.max(0,sibs.indexOf(e.target))*75)+'ms';
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:0.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  addEventListener('load',()=>{
+    document.querySelectorAll('header .reveal').forEach((el,i)=>{
+      el.style.transitionDelay=(i*100)+'ms';
+      el.classList.add('in');
+    });
+  });
+</script>
+</body>
+</html>
