@@ -41,6 +41,7 @@
     background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='69.28' viewBox='0 0 120 69.28'><g fill='none' stroke='%23E5E1D9' stroke-width='1.1'><path d='M40 0 L20 34.64 L-20 34.64 L-40 0 L-20 -34.64 L20 -34.64 Z'/><path d='M40 69.28 L20 103.92 L-20 103.92 L-40 69.28 L-20 34.64 L20 34.64 Z'/><path d='M100 34.64 L80 69.28 L40 69.28 L20 34.64 L40 0 L80 0 Z'/><path d='M160 0 L140 34.64 L100 34.64 L80 0 L100 -34.64 L140 -34.64 Z'/><path d='M160 69.28 L140 103.92 L100 103.92 L80 69.28 L100 34.64 L140 34.64 Z'/></g></svg>");
     background-size:120px 69.28px;
     opacity:0.5;
+    opacity:0.65;
   }
 
   /* ---------- NAV ---------- */
@@ -226,34 +227,59 @@
     box-shadow:0 34px 64px -36px rgba(2,48,72,0.4);
   }
   @media(max-width:880px){.game-card{grid-template-columns:1fr;}}
-  .poster{
-    position:relative;min-height:430px;
-    background:
-      radial-gradient(circle at 70% 22%,rgba(234,107,52,0.22),transparent 55%),
-      linear-gradient(160deg,var(--navy),#011f30);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    padding:40px;overflow:hidden;
+  /* trailer video panel — click-to-play facade */
+  .trailer{position:relative;background:#000;min-height:100%;cursor:pointer;overflow:hidden;}
+  .trailer::before{content:"";display:block;padding-top:62%;}
+  @media(max-width:880px){.trailer::before{padding-top:56.25%;}}
+  .trailer .tr-thumb{
+    position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    transition:transform .4s ease,filter .3s ease;
   }
-  .poster .phex{position:absolute;inset:0;opacity:0.32;
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='69.28' viewBox='0 0 120 69.28'><g fill='none' stroke='%23ffffff' stroke-width='1'><path d='M40 0 L20 34.64 L-20 34.64 L-40 0 L-20 -34.64 L20 -34.64 Z'/><path d='M40 69.28 L20 103.92 L-20 103.92 L-40 69.28 L-20 34.64 L20 34.64 Z'/><path d='M100 34.64 L80 69.28 L40 69.28 L20 34.64 L40 0 L80 0 Z'/><path d='M160 0 L140 34.64 L100 34.64 L80 0 L100 -34.64 L140 -34.64 Z'/><path d='M160 69.28 L140 103.92 L100 103.92 L80 69.28 L100 34.64 L140 34.64 Z'/></g></svg>");
-    background-size:120px 69.28px;
-    -webkit-mask-image:radial-gradient(ellipse at 50% 45%,#000,transparent 78%);
-            mask-image:radial-gradient(ellipse at 50% 45%,#000,transparent 78%);}
-  .crest{position:relative;z-index:2;text-align:center;}
-  .crest .ring{
-    width:122px;height:122px;margin:0 auto;border-radius:50%;
-    background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.14);
-    display:flex;align-items:center;justify-content:center;
+  .trailer:hover .tr-thumb{transform:scale(1.04);filter:brightness(.82);}
+  .trailer .tr-shade{
+    position:absolute;inset:0;
+    background:linear-gradient(160deg,rgba(2,48,72,0.35),rgba(1,20,32,0.55));
   }
-  .crest .gtitle{
-    font-family:'Ebrima',serif;font-weight:700;font-size:1.7rem;color:#fff;
-    margin-top:22px;line-height:1.12;
+  .trailer .tr-play{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:74px;height:74px;border-radius:50%;
+    background:var(--orange);display:flex;align-items:center;justify-content:center;
+    box-shadow:0 12px 30px rgba(2,48,72,0.5);transition:.2s;
   }
-  .crest .gtitle .tm{font-size:.5em;vertical-align:super;color:var(--orange);}
-  .crest .gsub{
+  .trailer:hover .tr-play{transform:translate(-50%,-50%) scale(1.08);background:var(--orange-dk);}
+  .trailer .tr-play svg{width:30px;height:30px;margin-left:4px;fill:#fff;}
+  .trailer .tr-label{
+    position:absolute;left:24px;bottom:22px;z-index:2;
+    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+    letter-spacing:.12em;text-transform:uppercase;color:#fff;
+    display:flex;align-items:center;gap:9px;
+  }
+  .trailer .tr-label .dot{width:8px;height:8px;border-radius:50%;background:var(--orange);}
+  .trailer .tr-fallback{
+    position:absolute;right:18px;bottom:20px;z-index:3;
     font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;
-    letter-spacing:.14em;text-transform:uppercase;color:var(--orange);margin-top:10px;
+    letter-spacing:.04em;color:#fff;
+    background:rgba(2,48,72,0.72);border:1px solid rgba(255,255,255,0.2);
+    padding:7px 12px;border-radius:7px;transition:.2s;
   }
+  .trailer .tr-fallback:hover{background:var(--orange);border-color:var(--orange);}
+  .trailer iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:5;}
+  /* steam widget block */
+  .steam-block{
+    margin-top:24px;background:var(--card);border:1px solid var(--line);
+    border-radius:16px;padding:24px;text-align:center;
+    box-shadow:0 18px 40px -30px rgba(2,48,72,0.4);
+  }
+  .steam-block .sb-label{
+    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);
+    margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:8px;
+  }
+  .steam-block .sb-label .blip{width:7px;height:7px;border-radius:50%;background:var(--orange);}
+  .steam-frame{
+    width:100%;max-width:646px;margin:0 auto;border-radius:8px;overflow:hidden;
+  }
+  .steam-frame iframe{display:block;width:100%;height:190px;border:0;}
   .game-body{padding:46px 42px;}
   @media(max-width:520px){.game-body{padding:34px 26px;}}
   .game-body h3{font-family:'Ebrima',serif;font-weight:600;font-size:1.7rem;
@@ -462,20 +488,19 @@
     </div>
 
     <div class="game-card reveal">
-      <div class="poster">
-        <div class="phex"></div>
-        <div class="crest">
-          <div class="ring">
-            <svg width="66" height="66" viewBox="0 0 66 66" fill="none">
-              <path d="M33 4 L56 17 L56 43 L33 56 L10 43 L10 17 Z" stroke="#ea6b34" stroke-width="3"/>
-              <path d="M33 16 L46 23.5 L46 38.5 L33 46 L20 38.5 L20 23.5 Z" fill="#ea6b34" opacity="0.22"/>
-              <path d="M33 16 L46 23.5 L46 38.5 L33 46 L20 38.5 L20 23.5 Z" stroke="#fff" stroke-width="2"/>
-              <circle cx="33" cy="31" r="3.4" fill="#fff"/>
-            </svg>
-          </div>
-          <div class="gtitle">Thieves Guild Master<span class="tm">™</span></div>
-          <div class="gsub">Strategy · Management · PC</div>
-        </div>
+      <div class="trailer" id="trailer" role="button" tabindex="0"
+           aria-label="Play the Thieves Guild Master trailer">
+        <img class="tr-thumb"
+             src="https://i.ytimg.com/vi/YBS2VvGjIzQ/maxresdefault.jpg"
+             alt="Thieves Guild Master trailer thumbnail"
+             onerror="this.src='https://i.ytimg.com/vi/YBS2VvGjIzQ/hqdefault.jpg'">
+        <div class="tr-shade"></div>
+        <div class="tr-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="tr-label"><span class="dot"></span>Watch the Trailer</div>
+        <a class="tr-fallback" id="trFallback"
+           href="https://www.youtube.com/watch?v=YBS2VvGjIzQ"
+           target="_blank" rel="noopener"
+           onclick="event.stopPropagation()">Trouble playing? Open on YouTube ↗</a>
       </div>
       <div class="game-body">
         <h3>Run the guild. Take the city.</h3>
@@ -499,7 +524,14 @@
             <div><div class="ft">City Influence Map</div><div class="fd">Conquer turfs district by district until the whole map turns yours.</div></div>
           </div>
         </div>
-        <a class="btn btn-navy" href="#contact">Follow Development</a>
+      </div>
+    </div>
+
+    <div class="steam-block reveal">
+      <div class="sb-label"><span class="blip"></span>Wishlist on Steam</div>
+      <div class="steam-frame">
+        <iframe src="https://store.steampowered.com/widget/4372150/"
+          title="Thieves Guild Master on Steam" loading="lazy"></iframe>
       </div>
     </div>
   </div>
@@ -542,17 +574,17 @@
       <a class="btn btn-navy" href="mailto:press@hexmapgames.com">Press Inquiries</a>
     </div>
     <div class="channels reveal">
-      <a href="#top">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 8l9 6 9-6"/></svg>
-        Newsletter
+      <a href="https://x.com/tgm_hexmap" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-6.9 7.9L23 22h-6.4l-5-6.5L5.8 22H2.7l7.4-8.4L1.5 2H8l4.5 6 5.4-6Zm-1.1 18h1.7L7.3 3.8H5.5L17.8 20Z"/></svg>
+        X / Twitter
       </a>
-      <a href="#top">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 4a8.5 8.5 0 0 1-2.4.7A4.2 4.2 0 0 0 20.5 2a8.4 8.4 0 0 1-2.7 1A4.2 4.2 0 0 0 11 6.8 11.9 11.9 0 0 1 2.4 2.5a4.2 4.2 0 0 0 1.3 5.6A4.1 4.1 0 0 1 1.8 7.6v.1a4.2 4.2 0 0 0 3.4 4.1 4.3 4.3 0 0 1-1.9.1 4.2 4.2 0 0 0 3.9 2.9A8.5 8.5 0 0 1 1 16.5 12 12 0 0 0 7.5 18c7.8 0 12-6.5 12-12.1v-.6A8.5 8.5 0 0 0 21 4z"/></svg>
-        Social
+      <a href="https://www.youtube.com/@HexMapGames" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 7.2a3 3 0 0 0-2.1-2.1C19.5 4.5 12 4.5 12 4.5s-7.5 0-9.4.6A3 3 0 0 0 .5 7.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-4.8ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z"/></svg>
+        YouTube
       </a>
-      <a href="#game">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h14v16l-7-4-7 4z"/></svg>
-        Wishlist
+      <a href="https://store.steampowered.com/app/4372150/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.98 2A10 10 0 0 0 2.06 11l5.34 2.2a2.83 2.83 0 0 1 1.6-.5h.14l2.37-3.44v-.05a3.78 3.78 0 1 1 3.78 3.78h-.09l-3.39 2.42v.12a2.84 2.84 0 0 1-5.65.42L2.36 14A10 10 0 1 0 11.98 2Zm-3.7 15.18-1.22-.5a2.13 2.13 0 0 0 3.92-.18 2.13 2.13 0 0 0-2.7-2.78l1.26.52a1.57 1.57 0 1 1-1.26 2.92Zm9.97-7.66a2.52 2.52 0 1 0-2.52 2.52 2.52 2.52 0 0 0 2.52-2.52Zm-4.4 0a1.9 1.9 0 1 1 1.9 1.89 1.9 1.9 0 0 1-1.9-1.89Z"/></svg>
+        Wishlist on Steam
       </a>
     </div>
   </div>
@@ -571,6 +603,12 @@
         <a href="#game">Our Games</a>
         <a href="#craft">Craft</a>
         <a href="#contact">Contact</a>
+        <a href="https://x.com/tgm_hexmap" target="_blank" rel="noopener" aria-label="X / Twitter" style="display:flex;align-items:center;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-6.9 7.9L23 22h-6.4l-5-6.5L5.8 22H2.7l7.4-8.4L1.5 2H8l4.5 6 5.4-6Zm-1.1 18h1.7L7.3 3.8H5.5L17.8 20Z"/></svg>
+        </a>
+        <a href="https://www.youtube.com/@HexMapGames" target="_blank" rel="noopener" aria-label="YouTube" style="display:flex;align-items:center;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 7.2a3 3 0 0 0-2.1-2.1C19.5 4.5 12 4.5 12 4.5s-7.5 0-9.4.6A3 3 0 0 0 .5 7.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-4.8ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z"/></svg>
+        </a>
       </div>
     </div>
     <div class="foot-bot">
@@ -601,6 +639,30 @@
       el.style.transitionDelay=(i*100)+'ms';
       el.classList.add('in');
     });
+  });
+
+  // click-to-play trailer: only loads the YouTube iframe when the user asks
+  const trailer=document.getElementById('trailer');
+  // The YouTube embed only works from a real http(s) origin. When the page
+  // is opened as a local file, clicking opens the video on YouTube instead
+  // (an embedded player there would fail with Error 153).
+  const canEmbed = location.protocol === 'http:' || location.protocol === 'https:';
+  const watchUrl = 'https://www.youtube.com/watch?v=YBS2VvGjIzQ';
+
+  function playTrailer(){
+    if(!canEmbed){ window.open(watchUrl,'_blank','noopener'); return; }
+    if(trailer.dataset.loaded) return;
+    trailer.dataset.loaded='1';
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube.com/embed/YBS2VvGjIzQ?autoplay=1&rel=0';
+    f.title='Thieves Guild Master — Trailer';
+    f.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+    f.allowFullscreen=true;
+    trailer.appendChild(f);
+  }
+  trailer.addEventListener('click',playTrailer);
+  trailer.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();playTrailer();}
   });
 </script>
 </body>
