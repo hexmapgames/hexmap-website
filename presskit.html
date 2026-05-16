@@ -201,7 +201,9 @@
     position:relative;flex:none;width:46px;height:46px;
     background:var(--orange);display:flex;align-items:center;justify-content:center;
     clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+    cursor:pointer;transition:background .2s,transform .2s;
   }
+  .dl-all .dico:hover{background:var(--orange-dk);transform:translateY(-2px);}
   .dl-all .dico svg{width:23px;height:23px;color:#fff;}
   .dl-all .dinfo{position:relative;flex:1;min-width:0;}
   .dl-all .dt{font-family:'Mada',system-ui,sans-serif;font-weight:600;font-size:1.14rem;color:#fff;}
@@ -517,7 +519,9 @@
 
     <div class="dl-all" style="margin-top:22px;">
       <div class="dhex"></div>
-      <div class="dico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 11l5 5 5-5M4 19h16"/></svg></div>
+      <a class="dico" href="assets/press/press-assets.zip" download aria-label="Download the full press kit ZIP">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 11l5 5 5-5M4 19h16"/></svg>
+      </a>
       <div class="dinfo">
         <div class="dt">Download the full press kit</div>
         <div class="dd">All six 4K screenshots plus every logo variant, in one ZIP.</div>
@@ -575,7 +579,7 @@
           <div class="an">HexMap Games — Logo, light (PNG)</div>
           <div class="ad">Full studio logo with wordmark, white background.</div>
         </div>
-        <a class="abtn abtn-orange" href="assets/hexmap-logo.png" download>Download</a>
+        <a class="abtn abtn-orange " href="assets/hexmap-logo.png" download>Download</a>
       </div>
       <div class="asset">
         <div class="aico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 L21 7 L21 17 L12 22 L3 17 L3 7 Z"/></svg></div>
@@ -583,7 +587,7 @@
           <div class="an">HexMap Games — Logo, dark (PNG)</div>
           <div class="ad">Full studio logo with wordmark, transparent background.</div>
         </div>
-        <a class="abtn abtn-orange" href="assets/hexmap-logo-white.png" download>Download</a>
+        <a class="abtn abtn-orange " href="assets/hexmap-logo-white.png" download>Download</a>
       </div>
       <div class="asset">
         <div class="aico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 L21 7 L21 17 L12 22 L3 17 L3 7 Z"/><path d="M12 8l4.6 2.6v5L12 18l-4.6-2.6v-5z"/></svg></div>
@@ -591,7 +595,7 @@
           <div class="an">HexMap Games — Hex Mark (PNG)</div>
           <div class="ad">Icon-only hex cluster mark, transparent background.</div>
         </div>
-        <a class="abtn abtn-orange" href="assets/hexmap-mark.png" download>Download</a>
+        <a class="abtn abtn-orange " href="assets/hexmap-mark.png" download>Download</a>
       </div>
       <div class="asset">
         <div class="aico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h14v16l-7-4-7 4z"/></svg></div>
